@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.snapp.linkshortener.shortenerservice.dto.PersistURLMessage;
 import com.snapp.linkshortener.shortenerservice.dto.ShortURLRequestDto;
 import com.snapp.linkshortener.shortenerservice.dto.ShortURLResponseDto;
+import com.snapp.linkshortener.shortenerservice.exception.InvalidException;
 import com.snapp.linkshortener.shortenerservice.util.URLValidator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -15,6 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.CheckedOutputStream;
 
 @Service
+@Slf4j
 public class URLShortenerService {
 
     @Value(value = "${spring.kafka.persist.url.topic.name}")
@@ -40,6 +43,7 @@ public class URLShortenerService {
     }
 
     public ShortURLResponseDto generateShortURL(ShortURLRequestDto requestDto) {
+        //ideally this range would be consumed from some outer coordinator like zookeeper
         long uniqueID = counter.getAndAdd(1);
         if (URLValidator.INSTANCE.validateURL(requestDto.getOriginalURL()) && uniqueID < END_RANGE && uniqueID >= START_RANGE){
             try {
@@ -49,13 +53,12 @@ public class URLShortenerService {
                 kafkaTemplate.send(persistUrlTopic, objectMapper.writeValueAsString(new PersistURLMessage(requestDto.getOriginalURL(), shortURL)));
                 return responseDto;
             } catch (JsonProcessingException e) {
+                log.error("json processing exception");
                 throw new RuntimeException(e);
             }
-        } else
-            throw new RuntimeException("");
+        } else {
+            log.error("invalid link or we may reach the maximum range on this instance");
+            throw new InvalidException("Invalid link exception");
+        }
     }
-
-//    public String getOriginalURL(String shortURL) {
-//
-//    }
 }

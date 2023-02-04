@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.snapp.linkshortener.redirectservice.dto.AnalyticalResponseDto;
 import com.snapp.linkshortener.redirectservice.dto.ClickRatioMessage;
+import com.snapp.linkshortener.redirectservice.exception.NotFoundException;
 import com.snapp.linkshortener.redirectservice.persistence.entity.URL;
 import com.snapp.linkshortener.redirectservice.persistence.repository.URLRepository;
 import com.snapp.linkshortener.redirectservice.service.IURLService;
@@ -43,7 +44,7 @@ public class URLServiceImpl implements IURLService {
             if (optional.isPresent())
                 originalLink = optional.get().getMainLink();
             else
-                throw new RuntimeException("not found");
+                throw new NotFoundException("URL NOT FOUND");
         }
         try {
             kafkaTemplate.send(urlClickRatioTopic, objectMapper.writeValueAsString(new ClickRatioMessage(shortUrl)));
@@ -60,6 +61,6 @@ public class URLServiceImpl implements IURLService {
             URL url = optional.get();
             return new AnalyticalResponseDto(SHORT_URL_DOMAIN + url.getShortLink(), url.getCreatedTime(), url.getClickCount());
         } else
-            throw new RuntimeException("not found");
+            throw new NotFoundException("URL NOT FOUND");
     }
 }

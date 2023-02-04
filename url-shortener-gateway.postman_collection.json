@@ -1,0 +1,82 @@
+{
+	"info": {
+		"_postman_id": "d4ec2b42-dcc7-430d-b1d4-4273d03865b2",
+		"name": "url-shortener-gateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "generateShortLink",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"originalURL\":\"www.yahoo.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9595/api/url-shortener/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9595",
+					"path": [
+						"api",
+						"url-shortener",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOriginalLink",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6565/api/url-shortener/gVKJp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6565",
+					"path": [
+						"api",
+						"url-shortener",
+						"gVKJp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getClickRatio",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6565/api/url-shortener/click-rate/gVKJp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6565",
+					"path": [
+						"api",
+						"url-shortener",
+						"click-rate",
+						"gVKJp"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

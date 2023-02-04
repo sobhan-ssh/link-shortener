@@ -18,33 +18,30 @@ import java.util.List;
 public class URLPersistConsumer {
 
     private final IURLService urlService;
-
     ObjectMapper mapper = new ObjectMapper();
-
 
     @KafkaListener(topics = "URL_PERSIST", containerFactory = "kafkaListenerContainerFactory")
     public void UrlPersistConsumer(List<ConsumerRecord<String, String>> records) {
-        for (int i = 0; i < records.size(); i++) {
+        PersistURLMessage urlMessage = new PersistURLMessage();
+        for (ConsumerRecord<String, String> stringStringConsumerRecord : records) {
             try {
-                ConsumerRecord<String, String> record = records.get(i);
-                PersistURLMessage urlMessage = mapper.readValue(record.value(), PersistURLMessage.class);
+                urlMessage = mapper.readValue(stringStringConsumerRecord.value(), PersistURLMessage.class);
                 urlService.persistUrl(urlMessage);
             } catch (Exception e) {
-                log.error("exception occurred when want to persist Url");
+                log.error("exception occurred when want to persist shortURL: {}, longURL: {}", urlMessage.getShortURL(), urlMessage.getOriginalURL());
             }
         }
     }
 
     @KafkaListener(topics = "URL_CLICK_RATIO", containerFactory = "kafkaListenerContainerFactory")
     public void UrlClickRatioConsumer(List<ConsumerRecord<String, String>> records) {
-        for (int i = 0; i < records.size(); i++) {
+        ClickRatioMessage clickRatioMessage = new ClickRatioMessage();
+        for (ConsumerRecord<String, String> stringStringConsumerRecord : records) {
             try {
-                ConsumerRecord<String, String> record = records.get(i);
-                ClickRatioMessage clickRatioMessage = mapper.readValue(record.value(), ClickRatioMessage.class);
+                clickRatioMessage = mapper.readValue(stringStringConsumerRecord.value(), ClickRatioMessage.class);
                 urlService.updateClickRatio(clickRatioMessage);
             } catch (Exception e) {
-                log.error("exception occurred when want to update Url click ratio");
-            }
+                log.error("exception occurred when want to update url click ration for shortURL: {}", clickRatioMessage.getShortURL());            }
         }
     }
 }

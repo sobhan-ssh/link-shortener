@@ -1,0 +1,147 @@
+version: "3.5"
+
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres:14.2
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: LINK-DB
+      PGDATA: /data/db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/data/db
+    networks:
+      - link-shortener-network
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    networks:
+      - link-shortener-network
+
+  redis:
+    container_name: redis
+    image: redis:6
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - link-shortener-network
+
+  zookeeper:
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+    networks:
+      - link-shortener-network
+
+  kafka:
+    container_name: kafka
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - link-shortener-network
+
+  discovery-server:
+    container_name: discovery-server
+    image: link-shortener-discovery-server-image
+    restart: always
+    ports:
+      - "8761:8761"
+    networks:
+      - link-shortener-network
+
+  config-server:
+    container_name: config-server
+    image: link-shortener-config-server-image
+    depends_on:
+      - rabbitmq
+    restart: always
+    ports:
+      - "8012:8012"
+    networks:
+      - link-shortener-network
+
+  api-gateway:
+    container_name: api-gateway
+    image: link-shortener-api-gateway-image
+    depends_on:
+      - discovery-server
+    restart: always
+    ports:
+      - "8082:8082"
+    networks:
+      - link-shortener-network
+
+  link-saver-service:
+    container_name: link-saver-service
+    image: link-shortener-link-saver-service-image
+    depends_on:
+      - discovery-server
+      - postgres
+      - kafka
+    restart: always
+    networks:
+      - link-shortener-network
+
+  redirect-service:
+    container_name: redirect-service
+    image: link-shortener-redirect-service-image
+    depends_on:
+      - discovery-server
+      - kafka
+      - redis
+      - postgres
+    restart: always
+    ports:
+      - "6565:6565"
+    networks:
+      - link-shortener-network
+
+  shortener-service:
+    container_name: shortener-service
+    image: link-shortener-shortener-service-image
+    depends_on:
+      - discovery-server
+      - kafka
+      - redis
+    restart: always
+    ports:
+      - "9595:9595"
+    networks:
+      - link-shortener-network
+
+networks:
+  link-shortener-network:
+    external: false
+
+
+
+
+

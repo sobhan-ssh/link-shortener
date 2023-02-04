@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ShortURLResponseDto {
 
-    private String mainUrl;
-    private String shortUrl;
+    private String originalURL;
+    private String shortURL;
+
 }

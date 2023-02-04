@@ -1,4 +1,4 @@
-package com.snapp.linkshortener.shortenerservice.dto;
+package com.snapp.link_saver.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShortURLRequestDto {
+public class ClickRatioMessage {
 
-    private String originalURL;
+    private String shortURL;
+
 }

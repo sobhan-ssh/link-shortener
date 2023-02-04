@@ -1,6 +1,7 @@
-package com.snapp.link_saver.persistence.repository;
+package com.snapp.linkshortener.redirectservice.persistence.repository;
 
-import com.snapp.link_saver.persistence.entity.URL;
+
+import com.snapp.linkshortener.redirectservice.persistence.entity.URL;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +11,4 @@ import java.util.Optional;
 public interface URLRepository extends JpaRepository<URL, String> {
 
     Optional<URL> findByShortLink(String shortLink);
-
 }

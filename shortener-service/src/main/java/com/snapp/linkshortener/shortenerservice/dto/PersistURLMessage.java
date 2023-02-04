@@ -1,4 +1,4 @@
-package com.snapp.link_saver.dto;
+package com.snapp.linkshortener.shortenerservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class URLDto {
+public class PersistURLMessage {
 
-    private String shortLink;
-    private String mainLink;
-
-
+    private String originalURL;
+    private String shortURL;
 }

@@ -1,4 +1,4 @@
-package com.snapp.link_saver.persistence.entity;
+package com.snapp.linkshortener.redirectservice.persistence.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

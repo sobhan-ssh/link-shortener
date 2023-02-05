@@ -91,6 +91,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>shortener-service</finalName>
     </build>
 
 </project>

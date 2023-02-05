@@ -70,8 +70,8 @@ services:
 
   discovery-server:
     build:
-      context: ./
-      dockerfile: /discovery-server/Dockerfile
+      context: ./discovery-server
+      dockerfile: ./Dockerfile
     container_name: discovery-server
     image: ls-discovery-server-img
     restart: always
@@ -82,8 +82,8 @@ services:
 
   config-server:
     build:
-      context: ./
-      dockerfile: /config-server/Dockerfile
+      context: ./config-server
+      dockerfile: ./Dockerfile
     container_name: config-server
     image: ls-config-server-img
     depends_on:
@@ -96,8 +96,8 @@ services:
 
   api-gateway:
     build:
-      context: ./
-      dockerfile: /api-gateway/Dockerfile
+      context: ./api-gateway
+      dockerfile: ./Dockerfile
     container_name: api-gateway
     image: ls-api-gateway-img
     depends_on:
@@ -110,8 +110,8 @@ services:
 
   link-saver-service:
     build:
-      context: ./
-      dockerfile: /link-saver/Dockerfile
+      context: ./link-saver
+      dockerfile: ./Dockerfile
     container_name: link-saver-service
     image: ls-link-saver-service-img
     depends_on:
@@ -124,8 +124,8 @@ services:
 
   redirect-service:
     build:
-      context: ./
-      dockerfile: /redirect-service/Dockerfile
+      context: ./redirect-service
+      dockerfile: ./Dockerfile
     container_name: redirect-service
     image: ls-redirect-service-img
     depends_on:
@@ -141,8 +141,8 @@ services:
 
   shortener-service:
     build:
-      context: ./
-      dockerfile: /shortener-service/Dockerfile
+      context: ./shortener-service
+      dockerfile: ./Dockerfile
     container_name: shortener-service
     image: ls-shortener-service-img
     depends_on:

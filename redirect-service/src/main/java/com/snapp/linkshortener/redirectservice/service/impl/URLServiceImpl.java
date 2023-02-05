@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -41,9 +42,11 @@ public class URLServiceImpl implements IURLService {
         originalLink = redisTemplate.opsForValue().get(shortUrl);
         if (Objects.isNull(originalLink))  {
             Optional<URL> optional = urlRepository.findByShortLink(shortUrl);
-            if (optional.isPresent())
-                originalLink = optional.get().getMainLink();
-            else
+            if (optional.isPresent()) {
+                URL url = optional.get();
+                originalLink = url.getMainLink();
+                redisTemplate.opsForValue().set(url.getShortLink(), url.getMainLink(), 3, TimeUnit.MINUTES);
+            } else
                 throw new NotFoundException("URL NOT FOUND");
         }
         try {

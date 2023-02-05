@@ -5,6 +5,7 @@ import com.snapp.link_saver.dto.PersistURLMessage;
 import com.snapp.link_saver.persistence.entity.URL;
 import com.snapp.link_saver.persistence.repository.URLRepository;
 import com.snapp.link_saver.service.IURLService;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -14,9 +15,11 @@ import java.util.Optional;
 public class URLServiceImpl implements IURLService {
 
     private final URLRepository urlRepository;
+    private final RedisTemplate<String, String> redisTemplate;
 
-    public URLServiceImpl(URLRepository urlRepository) {
+    public URLServiceImpl(URLRepository urlRepository, RedisTemplate<String, String> redisTemplate) {
         this.urlRepository = urlRepository;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -26,7 +29,9 @@ public class URLServiceImpl implements IURLService {
         url.setMainLink(urlMessage.getOriginalURL());
         url.setClickCount(0);
         url.setCreatedTime(new Date());
-        return urlRepository.save(url);
+        url = urlRepository.save(url);
+        redisTemplate.opsForValue().getAndDelete(url.getShortLink());
+        return url;
     }
 
     @Override

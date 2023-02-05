@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d4ec2b42-dcc7-430d-b1d4-4273d03865b2",
+		"_postman_id": "cb99a185-96b6-4f21-9e06-12b8936090b3",
 		"name": "url-shortener-gateway",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20974242"
 	},
 	"item": [
 		{
@@ -12,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"originalURL\":\"www.yahoo.com\"\r\n}",
+					"raw": "{\r\n    \"originalURL\":\"www.fb.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,12 +21,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9595/api/url-shortener/",
+					"raw": "http://localhost:8082/api/url-shortener/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "9595",
+					"port": "8082",
 					"path": [
 						"api",
 						"url-shortener",
@@ -41,16 +42,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6565/api/url-shortener/gVKJp",
+					"raw": "http://localhost:8082/api/url-shortener/gVKJo",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "6565",
+					"port": "8082",
 					"path": [
 						"api",
 						"url-shortener",
-						"gVKJp"
+						"gVKJo"
 					]
 				}
 			},
@@ -62,17 +63,17 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:6565/api/url-shortener/click-rate/gVKJp",
+					"raw": "http://localhost:8082/api/url-shortener/click-rate/gVKJo",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "6565",
+					"port": "8082",
 					"path": [
 						"api",
 						"url-shortener",
 						"click-rate",
-						"gVKJp"
+						"gVKJo"
 					]
 				}
 			},

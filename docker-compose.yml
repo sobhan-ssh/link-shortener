@@ -61,7 +61,7 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://kafka:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -69,8 +69,11 @@ services:
       - link-shortener-network
 
   discovery-server:
+    build:
+      context: ./
+      dockerfile: /discovery-server/Dockerfile
     container_name: discovery-server
-    image: link-shortener-discovery-server-image
+    image: ls-discovery-server-img
     restart: always
     ports:
       - "8761:8761"
@@ -78,8 +81,11 @@ services:
       - link-shortener-network
 
   config-server:
+    build:
+      context: ./
+      dockerfile: /config-server/Dockerfile
     container_name: config-server
-    image: link-shortener-config-server-image
+    image: ls-config-server-img
     depends_on:
       - rabbitmq
     restart: always
@@ -89,8 +95,11 @@ services:
       - link-shortener-network
 
   api-gateway:
+    build:
+      context: ./
+      dockerfile: /api-gateway/Dockerfile
     container_name: api-gateway
-    image: link-shortener-api-gateway-image
+    image: ls-api-gateway-img
     depends_on:
       - discovery-server
     restart: always
@@ -100,8 +109,11 @@ services:
       - link-shortener-network
 
   link-saver-service:
+    build:
+      context: ./
+      dockerfile: /link-saver/Dockerfile
     container_name: link-saver-service
-    image: link-shortener-link-saver-service-image
+    image: ls-link-saver-service-img
     depends_on:
       - discovery-server
       - postgres
@@ -111,8 +123,11 @@ services:
       - link-shortener-network
 
   redirect-service:
+    build:
+      context: ./
+      dockerfile: /redirect-service/Dockerfile
     container_name: redirect-service
-    image: link-shortener-redirect-service-image
+    image: ls-redirect-service-img
     depends_on:
       - discovery-server
       - kafka
@@ -125,8 +140,11 @@ services:
       - link-shortener-network
 
   shortener-service:
+    build:
+      context: ./
+      dockerfile: /shortener-service/Dockerfile
     container_name: shortener-service
-    image: link-shortener-shortener-service-image
+    image: ls-shortener-service-img
     depends_on:
       - discovery-server
       - kafka

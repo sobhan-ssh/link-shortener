@@ -1,7 +1,9 @@
 FROM openjdk:8-jdk-alpine
-ARG JAR_FILE=./target/api-gateway.jar
-COPY ${JAR_FILE} app.jar
+FROM maven
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean install
 EXPOSE 8082
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","target/api-gateway.jar"]
 
 

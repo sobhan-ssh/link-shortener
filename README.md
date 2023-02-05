@@ -24,6 +24,16 @@ This project implemented with the following stack:
 </ul>
 
 # HOW TO RUN PROJECT
-**You just need to have `Docker` and `Maven` installed on your machine**
+**You just need to have `Docker` installed on your machine and the follow the steps below**
+1. Clone the repository, in `/link-shortener` directory using command :
+   `git clone https://github.com/sobhan-ssh/link-shortener.git`
+
+2. `cd link-shortener`
+
+3. Build the project using Docker with executing command :
+   `docker compose build`
+
+4. Run project containers using command:
+   `docker compose up`
 
 - There is also an export of API services for using in Postman application, this file exists in the root of project with name of **url-shortener-gateway.postman_collection.json**

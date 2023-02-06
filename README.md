@@ -10,6 +10,10 @@ To achieve this goal I have created six service:
 4. SHORTENER-SERVICE: have only a single API and by sending long URLs will return a unique short URL and also will save it on Redis and produce an event for LINK-SAVER-SERVICE to persist it on database
 5. LINK-SAVER-SERVICE: will consume SHORTENER-SERVICE events and persist short and long URL pairs in database, it also contains another consumer related to click ratio per short link
 6. REDIRECT-SERVICE: contains an API that by sending the short URL will return the original one and another API to return the click count of specific short URL
+<br/>
+
+![Untitled Diagram drawio(1)](https://user-images.githubusercontent.com/33926491/216900698-19b2cbb8-b524-4e2d-8662-53d3ff64df8a.png)
+
 
 <br/>
 This project implemented with the following stack:

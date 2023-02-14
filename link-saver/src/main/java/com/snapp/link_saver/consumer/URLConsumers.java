@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class URLPersistConsumer {
+public class URLConsumers {
 
     private final IURLService urlService;
     ObjectMapper mapper = new ObjectMapper();
